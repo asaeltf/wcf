@@ -46,6 +46,69 @@ public class Service : IService
 
 		return data;
 	}
+
+
+    // DELETE
+    public string EliminarActivoEmpleado(int id)
+    {
+        string data = "";
+        try
+        {
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+
+            var response = client.DeleteAsync("https://soa-p2-bellako-production.up.railway.app/ActivoEmpleado/" + id).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                // response.Content.ReadAsStringAsync().Result;
+                var result = response.Content.ReadAsStringAsync().Result;
+
+                //Activo activos = JsonConvert.DeserializeObject<Activo>(result);
+                data = result;
+                //var activo = activos;
+
+                //data = JsonConvert.SerializeObject(activo);
+            }
+        }
+        catch (Exception e)
+        {
+            data = e.Message;
+        }
+
+        return data;
+    }
+
+    public string EliminarEmpleado(int id)
+    {
+        string data = "";
+        try
+        {
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+
+            var response = client.DeleteAsync("https://soa-p2-bellako-production.up.railway.app/Personas/" + id).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                // response.Content.ReadAsStringAsync().Result;
+                var result = response.Content.ReadAsStringAsync().Result;
+
+                //Activo activos = JsonConvert.DeserializeObject<Activo>(result);
+                data = result;
+                //var activo = activos;
+
+                //data = JsonConvert.SerializeObject(activo);
+            }
+        }
+        catch (Exception e)
+        {
+            data = e.Message;
+        }
+
+        return data;
+    }
+
     public string ObtenerEmpleados()
     {
         string data = "";
@@ -228,4 +291,33 @@ public class Service : IService
 
         return data;
     }
+    public string AvisarEmpleado(string Mensaje, string Correo)
+    {
+        EmailPersonaRequest request = new EmailPersonaRequest(Mensaje, Correo);
+        var requestContent = JsonContent.Create(request);
+        string data = "";
+        try
+        {
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+
+            var response = client.PostAsync("https://localhost:7083/Email/avisarEntrega", requestContent).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                // response.Content.ReadAsStringAsync().Result;
+                var result = response.Content.ReadAsStringAsync().Result;
+
+                data = result;
+            }
+        }
+        catch (Exception e)
+        {
+            data = e.Message;
+        }
+
+        return data;
+    }
+
+
 }
