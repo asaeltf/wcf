@@ -37,6 +37,8 @@ public interface IService
 	string RegistrarActivoEmpledao(int identificadorEmpleado, int identificadoActivo, DateTime fechaAsignacion, DateTime fechaLiberacion, DateTime fechaEntrega);
 	[OperationContract]
 	string AvisarEmpleado(string mensaje, string correo);
+	[OperationContract]
+	string EnviarCorreos(string mensaje);
 
 	//DELETE
 	[OperationContract]

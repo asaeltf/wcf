@@ -301,7 +301,35 @@ public class Service : IService
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();
 
-            var response = client.PostAsync("https://localhost:7083/Email/avisarEntrega", requestContent).Result;
+            var response = client.PostAsync("https://soa-p2-bellako-production.up.railway.app/Email/avisarEntrega", requestContent).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                // response.Content.ReadAsStringAsync().Result;
+                var result = response.Content.ReadAsStringAsync().Result;
+
+                data = result;
+            }
+        }
+        catch (Exception e)
+        {
+            data = e.Message;
+        }
+
+        return data;
+    }
+
+    public string EnviarCorreos(string mensaje)
+    {
+        EmailRequest request = new EmailRequest(mensaje);
+        var requestContent = JsonContent.Create(request);
+        string data = "";
+        try
+        {
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+
+            var response = client.PostAsync("https://soa-p2-bellako-production.up.railway.app/Email", requestContent).Result;
 
             if (response.IsSuccessStatusCode)
             {
